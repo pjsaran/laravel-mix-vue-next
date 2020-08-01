@@ -7,7 +7,7 @@ class Vue {
      * Required dependencies for the component.
      */
     dependencies() {
-        let dependencies = ['vue-template-compiler'];
+        let dependencies = ['@vue/compiler-sfc'];
 
         if (Config.extractVueStyles && Config.globalVueStyles) {
             dependencies.push('sass-resources-loader');
@@ -22,14 +22,12 @@ class Vue {
      * @param {Object} webpackConfig
      */
     webpackConfig(webpackConfig) {
+        webpackConfig.resolve.alias = {
+            vue: '@vue/runtime-dom',
+        };
         webpackConfig.module.rules.push({
             test: /\.vue$/,
-            use: [
-                {
-                    loader: 'vue-loader',
-                    options: Config.vue || {}
-                }
-            ]
+            use: 'vue-loader',
         });
 
         webpackConfig.plugins.push(new VueLoaderPlugin());
@@ -44,9 +42,9 @@ class Vue {
      */
     updateCssLoaders(webpackConfig) {
         // Basic CSS and PostCSS
-        this.updateCssLoader('css', webpackConfig, rule => {
+        this.updateCssLoader('css', webpackConfig, (rule) => {
             rule.loaders.find(
-                loader => loader.loader === 'postcss-loader'
+                (loader) => loader.loader === 'postcss-loader'
             ).options = this.postCssOptions();
         });
 
@@ -54,10 +52,10 @@ class Vue {
         this.updateCssLoader('less', webpackConfig);
 
         // SASS
-        let sassCallback = rule => {
+        let sassCallback = (rule) => {
             if (Mix.seesNpmPackage('sass')) {
                 rule.loaders.find(
-                    loader => loader.loader === 'sass-loader'
+                    (loader) => loader.loader === 'sass-loader'
                 ).options.implementation = require('sass');
             }
 
@@ -65,8 +63,8 @@ class Vue {
                 rule.loaders.push({
                     loader: 'sass-resources-loader',
                     options: {
-                        resources: Mix.paths.root(Config.globalVueStyles)
-                    }
+                        resources: Mix.paths.root(Config.globalVueStyles),
+                    },
                 });
             }
         };
@@ -89,7 +87,7 @@ class Vue {
      * @param {Function} callback
      */
     updateCssLoader(loader, webpackConfig, callback) {
-        let rule = webpackConfig.module.rules.find(rule => {
+        let rule = webpackConfig.module.rules.find((rule) => {
             return rule.test instanceof RegExp && rule.test.test('.' + loader);
         });
 
@@ -100,9 +98,7 @@ class Vue {
 
             rule.loaders = extractPlugin.extract({
                 fallback: 'style-loader',
-                use: collect(rule.loaders)
-                    .except('style-loader')
-                    .all()
+                use: collect(rule.loaders).except('style-loader').all(),
             });
 
             this.addExtractPluginToConfig(extractPlugin, webpackConfig);
@@ -115,7 +111,8 @@ class Vue {
     postCssOptions() {
         if (Mix.components.get('postCss')) {
             return {
-                plugins: Mix.components.get('postCss').details[0].postCssPlugins
+                plugins: Mix.components.get('postCss').details[0]
+                    .postCssPlugins,
             };
         }
 
@@ -149,7 +146,7 @@ class Vue {
         if (typeof Config.extractVueStyles === 'boolean') {
             let preprocessorName = Object.keys(Mix.components.all())
                 .reverse()
-                .find(componentName => {
+                .find((componentName) => {
                     return ['sass', 'less', 'stylus', 'postCss'].includes(
                         componentName
                     );

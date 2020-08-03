@@ -1,6 +1,6 @@
 {
     "name": "laravel-mix-vue-next",
-    "version": "0.2.0",
+    "version": "0.4.0",
     "description": "Just a stop gap solution to support vue 3 till it is officially supported by Laravel Mix. Please do not use this.",
     "main": "src/index.js",
     "scripts": {

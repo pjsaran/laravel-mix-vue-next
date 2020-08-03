@@ -1,7 +1,7 @@
 {
-    "name": "laravel-mix",
-    "version": "5.0.4",
-    "description": "Laravel Mix is an elegant wrapper around Webpack for the 80% use case.",
+    "name": "laravel-mix-vue-next",
+    "version": "0.2.0",
+    "description": "Just a stop gap solution to support vue 3 till it is officially supported by Laravel Mix. Please do not use this.",
     "main": "src/index.js",
     "scripts": {
         "webpack": "NODE_ENV=development webpack --progress --hide-modules",
@@ -12,18 +12,21 @@
         "posttest": "nyc report --reporter=html",
         "eslint": "eslint setup/ src/ test/ --max-warnings=0"
     },
-    "repository": "JeffreyWay/laravel-mix",
-    "bugs": {
-        "url": "https://github.com/JeffreyWay/laravel-mix/issues"
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/pjsaran/laravel-mix-vue-next"
     },
-    "homepage": "https://github.com/JeffreyWay/laravel-mix#readme",
+    "bugs": {
+        "url": "https://github.com/pjsaran/laravel-mix-vue-next/issues"
+    },
+    "homepage": "https://github.com/pjsaran/laravel-mix-vue-next#readme",
     "keywords": [
         "laravel",
         "webpack",
         "laravel elixir",
         "laravel mix"
     ],
-    "author": "Jeffrey Way",
+    "author": "saravanan",
     "license": "MIT",
     "files": [
         "icons",
@@ -37,6 +40,7 @@
         "@babel/plugin-transform-runtime": "^7.2.0",
         "@babel/preset-env": "^7.2.0",
         "@babel/runtime": "^7.2.0",
+        "@ant-design-vue/babel-plugin-jsx": "^1.0.0-rc.1",
         "autoprefixer": "^9.4.2",
         "babel-loader": "^8.0.4",
         "babel-merge": "^2.0.1",
@@ -100,5 +104,9 @@
     },
     "engines": {
         "node": ">=8.9.0"
+    },
+    "directories": {
+        "doc": "docs",
+        "test": "test"
     }
 }
